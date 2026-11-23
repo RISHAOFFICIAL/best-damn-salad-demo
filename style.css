@@ -41,7 +41,7 @@ a:hover { color: var(--white); }
 
 .hidden { display: none !important; }
 
-/* Falling leaves canvas - in front of everything */
+/* Falling salad canvas - in front of everything */
 #leaves {
   position: fixed;
   inset: 0;
@@ -400,48 +400,33 @@ a:hover { color: var(--white); }
 .why-card h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
 .why-card p { color: var(--grey); font-size: 0.95rem; line-height: 1.5; }
 
-/* Catering */
+/* Catering - condensed: short copy + one CTA */
 .catering-section { background: var(--black-2); border-top: 2px solid var(--line); }
-.catering-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-.catering-packages { display: flex; flex-direction: column; gap: 0; border: 2px solid var(--line); }
-.catering-package {
-  background: var(--black-3);
-  padding: 1.2rem 1.3rem;
-  border-bottom: 2px solid var(--line);
-}
-.catering-package:last-child { border-bottom: none; }
-.catering-package h3 { font-size: 1.25rem; margin-bottom: 0.2rem; }
-.catering-price {
-  font-family: 'Archivo', sans-serif;
-  font-weight: 800;
-  color: var(--lime);
+.catering-condensed { max-width: 720px; }
+.catering-condensed p:not(.section-kicker) {
   font-size: 1.05rem;
-  margin-bottom: 0.5rem;
+  color: var(--grey);
+  margin-bottom: 1.5rem;
 }
-.catering-package p:last-child { color: var(--grey); }
+.catering-condensed .btn { margin-top: 0.25rem; }
 
 /* Forms - dark, square, hard borders */
-.catering-form-wrap, .order-form-wrap {
+.order-form-wrap {
   position: sticky;
   top: 100px;
 }
-.catering-form, .order-form {
+.order-form {
   background: var(--black-3);
   border: 3px solid var(--white);
   border-radius: 0;
   padding: 1.5rem;
 }
-.catering-form h3, .order-form h3 {
+.order-form h3 {
   font-size: 1.7rem;
   margin-bottom: 0.5rem;
 }
 .order-intro { color: var(--grey); margin-bottom: 1.25rem; }
-.catering-form label, .order-form label {
+.order-form label {
   display: block;
   font-family: 'Archivo', sans-serif;
   font-weight: 700;
@@ -451,7 +436,6 @@ a:hover { color: var(--white); }
   margin-bottom: 0.7rem;
   color: var(--white);
 }
-.catering-form input, .catering-form textarea,
 .order-form input, .order-form select, .order-form textarea {
   display: block;
   width: 100%;
@@ -464,16 +448,14 @@ a:hover { color: var(--white); }
   background: var(--black);
   color: var(--white);
 }
-.catering-form input:focus, .catering-form textarea:focus,
 .order-form input:focus, .order-form select:focus, .order-form textarea:focus {
   outline: none;
   border-color: var(--lime);
 }
-.catering-form input::placeholder, .catering-form textarea::placeholder,
 .order-form input::placeholder, .order-form textarea::placeholder {
   color: var(--grey-dark);
 }
-.catering-form button, .order-form button { width: 100%; margin-top: 0.5rem; }
+.order-form button { width: 100%; margin-top: 0.5rem; }
 .form-note { font-size: 0.85rem; color: var(--grey-dark); text-align: center; margin-top: 0.75rem; }
 .form-success {
   margin-top: 1rem;
@@ -655,8 +637,8 @@ a:hover { color: var(--white); }
   .why-card:nth-child(2n) { border-right: none; }
   .why-card:nth-child(n+4) { border-bottom: 2px solid var(--line); }
   .why-card:nth-child(n+5) { border-bottom: none; }
-  .catering-split, .visit-split { grid-template-columns: 1fr; }
-  .catering-form-wrap, .order-form-wrap { position: static; }
+  .visit-split { grid-template-columns: 1fr; }
+  .order-form-wrap { position: static; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); }
   .reviews-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }

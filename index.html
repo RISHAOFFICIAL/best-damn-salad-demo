@@ -279,43 +279,11 @@
   <!-- CATERING -->
   <section class="section catering-section" id="catering">
     <div class="section-inner">
-      <div class="catering-split">
-        <div class="catering-copy">
-          <p class="section-kicker">03 // Feed The Crowd</p>
-          <h2 class="section-title">WE CATER</h2>
-          <p class="section-intro">Office lunch, family gathering, church event, or game day. We bring the fresh to your party.</p>
-          <div class="catering-packages">
-            <div class="catering-package">
-              <h3>Lunch Catering</h3>
-              <p class="catering-price">Starting at $12 per person</p>
-              <p>Assorted salads, sandwiches, and wraps for your office or team. Minimum 10 people. Plates, napkins, and utensils included.</p>
-            </div>
-            <div class="catering-package">
-              <h3>Event Catering</h3>
-              <p class="catering-price">Starting at $15 per person</p>
-              <p>Full spread for parties, reunions, and celebrations. Salads, sandwiches, wraps, sides, and pineapple pie. Minimum 20 people.</p>
-            </div>
-            <div class="catering-package">
-              <h3>Custom Orders</h3>
-              <p class="catering-price">Let's talk</p>
-              <p>Big order for a special event? Call us and we will build a menu for your crowd and your budget.</p>
-            </div>
-          </div>
-        </div>
-        <div class="catering-form-wrap">
-          <form class="catering-form" id="cateringForm">
-            <h3>Get a Catering Quote</h3>
-            <label>Name<input type="text" name="name" placeholder="Your name" required></label>
-            <label>Email<input type="email" name="email" placeholder="you@email.com" required></label>
-            <label>Phone<input type="tel" name="phone" placeholder="(313) 555-1234"></label>
-            <label>Event Date<input type="date" name="date"></label>
-            <label>How many people?<input type="number" name="headcount" min="10" placeholder="20"></label>
-            <label>What do you need?<textarea name="details" rows="3" placeholder="Office lunch for 25, mix of salads and wraps, need delivery by noon..."></textarea></label>
-            <button type="submit" class="btn btn-lime btn-lg">Request Quote</button>
-            <p class="form-note">This is a demo form. In the live site, quotes go straight to Tony.</p>
-            <p class="form-success hidden" id="cateringSuccess">Thanks! We got your request and will get back to you soon.</p>
-          </form>
-        </div>
+      <div class="catering-condensed">
+        <p class="section-kicker">03 // Feed The Crowd</p>
+        <h2 class="section-title">WE CATER</h2>
+        <p>We cater events, offices, and parties. Fresh salads, sandwiches, and wraps delivered. Call <a href="tel:+13139702780">(313) 970-2780</a> or email <a href="mailto:thebestdamnsalad.com@gmail.com">thebestdamnsalad.com@gmail.com</a> for a quote.</p>
+        <a class="btn btn-lime btn-lg" href="tel:+13139702780">Get a Catering Quote</a>
       </div>
     </div>
   </section>
@@ -472,69 +440,129 @@ tabs.forEach(tab => {
   });
 });
 
-// Demo form confirmations
-document.getElementById('cateringForm').addEventListener('submit', e => {
-  e.preventDefault();
-  document.getElementById('cateringSuccess').classList.remove('hidden');
-});
+// Demo form confirmation
 document.getElementById('orderForm').addEventListener('submit', e => {
   e.preventDefault();
   document.getElementById('orderSuccess').classList.remove('hidden');
 });
 
-// Falling autumn leaves
+// Falling salad ingredients
 (function() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const canvas = document.getElementById('leaves');
   const ctx = canvas.getContext('2d');
-  let w, h, leaves = [];
-  const COLORS = ['#D97A2B', '#C94F2E', '#E8A838', '#8A5A2B', '#B85C38'];
+  let w, h, pieces = [];
+  const TYPES = ['lettuce', 'tomato', 'cucumber', 'carrot', 'onion'];
+  const LETTUCE_GREENS = ['#2D9E44', '#4CAF50', '#7CFC00', '#228B22'];
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
   }
-  function makeLeaf() {
+  function makePiece() {
     return {
       x: Math.random() * w,
       y: -20 - Math.random() * 100,
-      size: 8 + Math.random() * 14,
+      size: 8 + Math.random() * 12,
       speedY: 0.6 + Math.random() * 1.4,
       sway: Math.random() * 2 * Math.PI,
       swaySpeed: 0.005 + Math.random() * 0.015,
       rotation: Math.random() * Math.PI * 2,
       rotSpeed: (Math.random() - 0.5) * 0.02,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      opacity: 0.5 + Math.random() * 0.5
+      type: TYPES[Math.floor(Math.random() * TYPES.length)],
+      color: LETTUCE_GREENS[Math.floor(Math.random() * LETTUCE_GREENS.length)],
+      opacity: 0.55 + Math.random() * 0.45
     };
   }
   function init() {
     resize();
-    leaves = Array.from({length: 28}, () => {
-      const l = makeLeaf();
-      l.y = Math.random() * h;
-      return l;
+    pieces = Array.from({length: 30}, () => {
+      const p = makePiece();
+      p.y = Math.random() * h;
+      return p;
     });
   }
-  function draw(leaf) {
+  function draw(piece) {
+    const s = piece.size;
     ctx.save();
-    ctx.translate(leaf.x, leaf.y);
-    ctx.rotate(leaf.rotation);
-    ctx.globalAlpha = leaf.opacity;
-    ctx.fillStyle = leaf.color;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, leaf.size * 0.6, leaf.size, 0, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.translate(piece.x, piece.y);
+    ctx.rotate(piece.rotation);
+    ctx.globalAlpha = piece.opacity;
+    if (piece.type === 'lettuce') {
+      // Lettuce leaf: wavy ellipse with a center vein
+      ctx.fillStyle = piece.color;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, s * 0.6, s, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, -s * 0.8);
+      ctx.lineTo(0, s * 0.8);
+      ctx.stroke();
+    } else if (piece.type === 'tomato') {
+      // Tomato slice: red circle with lighter seeds
+      ctx.fillStyle = '#FF2D2D';
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#FF7A7A';
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.45, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#FFD1D1';
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 + 0.4;
+        ctx.beginPath();
+        ctx.arc(Math.cos(a) * s * 0.3, Math.sin(a) * s * 0.3, s * 0.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (piece.type === 'cucumber') {
+      // Cucumber slice: green ring with pale center
+      ctx.fillStyle = '#2D9E44';
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#C8E6A0';
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.55, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#8FBF6F';
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.ellipse(Math.cos(a) * s * 0.3, Math.sin(a) * s * 0.3, s * 0.08, s * 0.14, a, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else if (piece.type === 'carrot') {
+      // Carrot shred: thin orange rectangle
+      ctx.fillStyle = '#FF7A1A';
+      ctx.fillRect(-s * 0.15, -s, s * 0.3, s * 2);
+      ctx.fillStyle = '#FFB35C';
+      ctx.fillRect(-s * 0.05, -s, s * 0.1, s * 2);
+    } else {
+      // Red onion ring: purple ring
+      ctx.strokeStyle = '#A64CA6';
+      ctx.lineWidth = s * 0.28;
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeStyle = '#D9A0D9';
+      ctx.lineWidth = s * 0.1;
+      ctx.beginPath();
+      ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2);
+      ctx.stroke();
+    }
     ctx.restore();
   }
   function tick() {
     ctx.clearRect(0, 0, w, h);
-    leaves.forEach((leaf, i) => {
-      leaf.y += leaf.speedY;
-      leaf.sway += leaf.swaySpeed;
-      leaf.x += Math.sin(leaf.sway) * 0.6;
-      leaf.rotation += leaf.rotSpeed;
-      if (leaf.y > h + 30) leaves[i] = makeLeaf();
-      draw(leaf);
+    pieces.forEach((piece, i) => {
+      piece.y += piece.speedY;
+      piece.sway += piece.swaySpeed;
+      piece.x += Math.sin(piece.sway) * 0.6;
+      piece.rotation += piece.rotSpeed;
+      if (piece.y > h + 30) pieces[i] = makePiece();
+      draw(piece);
     });
     requestAnimationFrame(tick);
   }
