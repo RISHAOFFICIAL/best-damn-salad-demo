@@ -172,26 +172,38 @@ a:hover { color: var(--white); }
   margin-bottom: 1.25rem;
 }
 .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-.hero-panel {
-  background: var(--lime);
-  color: #0E0E0E;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-left: 6px solid var(--red);
+.hero-photo {
+  position: relative;
+  border: 3px solid var(--lime);
+  overflow: hidden;
 }
-.hero-panel-line {
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  min-height: 280px;
+}
+.hero-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 2rem 1.5rem 1.25rem;
+}
+.hero-photo-caption p:first-child {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  line-height: 1.05;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  line-height: 1.1;
   text-transform: uppercase;
+  color: var(--lime);
 }
-.hero-panel-sub {
-  margin-top: 0.9rem;
+.hero-photo-caption p:last-child {
+  margin-top: 0.5rem;
   font-weight: 700;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  color: var(--white);
 }
 .hero-facts {
   display: grid;
@@ -306,19 +318,29 @@ a:hover { color: var(--white); }
   background: var(--black-3);
   border: 2px solid var(--line);
   border-radius: 0;
-  padding: 1.2rem 1.3rem;
+  padding: 0;
   position: relative;
   transition: border-color 0.15s;
+  overflow: hidden;
 }
 .menu-item:hover { border-color: var(--lime); }
 .menu-item.featured { border-color: var(--lime); border-width: 3px; }
+.menu-item-photo {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 2px solid var(--line);
+}
 .menu-item-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
   margin-bottom: 0.6rem;
+  padding: 1.2rem 1.3rem 0;
 }
+.menu-item:not(:has(.menu-item-photo)) .menu-item-top { padding-top: 1.2rem; }
 .menu-item-top h3 { font-size: 1.3rem; }
 .price {
   font-family: 'Anton', sans-serif;
@@ -326,11 +348,13 @@ a:hover { color: var(--white); }
   color: var(--lime);
   flex-shrink: 0;
 }
-.menu-item p { color: var(--grey); font-size: 0.95rem; line-height: 1.5; }
+.menu-item p { color: var(--grey); font-size: 0.95rem; line-height: 1.5; padding: 0 1.3rem; }
+.menu-item p:last-of-type { padding-bottom: 1.2rem; }
+.menu-item:has(.menu-tag) p:last-of-type { padding-bottom: 0; }
 .menu-note { font-size: 0.9rem !important; font-style: italic; margin-top: 0.5rem; color: var(--grey-dark) !important; }
 .menu-tag {
   display: inline-block;
-  margin-top: 1rem;
+  margin: 1rem 1.3rem 1.2rem;
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
   font-size: 0.75rem;
@@ -461,7 +485,7 @@ a:hover { color: var(--white); }
   font-size: 0.95rem;
 }
 
-/* Gallery - square blocks, big codes, no emoji */
+/* Gallery - photo tiles, square, no emoji */
 .gallery-section { background: var(--black); border-top: 2px solid var(--line); }
 .gallery-grid {
   display: grid;
@@ -473,31 +497,31 @@ a:hover { color: var(--white); }
   background: var(--black-3);
   border: 2px solid var(--line);
   border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem;
+  position: relative;
+  overflow: hidden;
   transition: border-color 0.15s;
 }
 .gallery-tile:hover { border-color: var(--lime); }
-.gallery-tile-lime { background: var(--lime); border-color: var(--lime); }
-.gallery-tile-lime .gallery-code, .gallery-tile-lime p { color: #0E0E0E; }
-.gallery-tile-red { background: var(--red); border-color: var(--red); }
-.gallery-tile-red .gallery-code, .gallery-tile-red p { color: var(--white); }
-.gallery-code {
-  font-family: 'Anton', sans-serif;
-  font-size: 1.9rem;
-  color: var(--lime);
-  line-height: 1;
+.gallery-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .gallery-tile p {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   font-family: 'Archivo', sans-serif;
   font-weight: 800;
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1.25;
+  color: var(--white);
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 2rem 1rem 1rem;
 }
 .gallery-cta {
   text-align: center;
