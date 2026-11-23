@@ -446,14 +446,25 @@ document.getElementById('orderForm').addEventListener('submit', e => {
   document.getElementById('orderSuccess').classList.remove('hidden');
 });
 
-// Falling salad ingredients
+// Falling salad ingredients (realistic photo sprites)
 (function() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const canvas = document.getElementById('leaves');
   const ctx = canvas.getContext('2d');
   let w, h, pieces = [];
-  const TYPES = ['lettuce', 'tomato', 'cucumber', 'carrot', 'onion'];
-  const LETTUCE_GREENS = ['#2D9E44', '#4CAF50', '#7CFC00', '#228B22'];
+  const SPRITES = [
+    { src: 'images/falling/lettuce.png', fallback: '#2D9E44' },
+    { src: 'images/falling/tomato.png', fallback: '#FF2D2D' },
+    { src: 'images/falling/cucumber.png', fallback: '#2D9E44' },
+    { src: 'images/falling/carrot.png', fallback: '#FF7A1A' },
+    { src: 'images/falling/onion.png', fallback: '#A64CA6' },
+    { src: 'images/falling/pepper.png', fallback: '#FFC400' }
+  ];
+  const images = SPRITES.map(s => {
+    const img = new Image();
+    img.src = s.src;
+    return { img: img, fallback: s.fallback };
+  });
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
@@ -461,96 +472,41 @@ document.getElementById('orderForm').addEventListener('submit', e => {
   function makePiece() {
     return {
       x: Math.random() * w,
-      y: -20 - Math.random() * 100,
-      size: 8 + Math.random() * 12,
+      y: -30 - Math.random() * 100,
+      size: 10 + Math.random() * 14,
       speedY: 0.6 + Math.random() * 1.4,
       sway: Math.random() * 2 * Math.PI,
       swaySpeed: 0.005 + Math.random() * 0.015,
       rotation: Math.random() * Math.PI * 2,
       rotSpeed: (Math.random() - 0.5) * 0.02,
-      type: TYPES[Math.floor(Math.random() * TYPES.length)],
-      color: LETTUCE_GREENS[Math.floor(Math.random() * LETTUCE_GREENS.length)],
-      opacity: 0.55 + Math.random() * 0.45
+      sprite: images[Math.floor(Math.random() * images.length)],
+      opacity: 0.75 + Math.random() * 0.25
     };
   }
   function init() {
     resize();
-    pieces = Array.from({length: 30}, () => {
+    pieces = Array.from({length: 26}, () => {
       const p = makePiece();
       p.y = Math.random() * h;
       return p;
     });
   }
   function draw(piece) {
-    const s = piece.size;
+    const img = piece.sprite.img;
+    const dw = piece.size * 2;
     ctx.save();
     ctx.translate(piece.x, piece.y);
     ctx.rotate(piece.rotation);
     ctx.globalAlpha = piece.opacity;
-    if (piece.type === 'lettuce') {
-      // Lettuce leaf: wavy ellipse with a center vein
-      ctx.fillStyle = piece.color;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, s * 0.6, s, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, -s * 0.8);
-      ctx.lineTo(0, s * 0.8);
-      ctx.stroke();
-    } else if (piece.type === 'tomato') {
-      // Tomato slice: red circle with lighter seeds
-      ctx.fillStyle = '#FF2D2D';
-      ctx.beginPath();
-      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#FF7A7A';
-      ctx.beginPath();
-      ctx.arc(0, 0, s * 0.45, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#FFD1D1';
-      for (let i = 0; i < 4; i++) {
-        const a = (i / 4) * Math.PI * 2 + 0.4;
-        ctx.beginPath();
-        ctx.arc(Math.cos(a) * s * 0.3, Math.sin(a) * s * 0.3, s * 0.1, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    } else if (piece.type === 'cucumber') {
-      // Cucumber slice: green ring with pale center
-      ctx.fillStyle = '#2D9E44';
-      ctx.beginPath();
-      ctx.arc(0, 0, s * 0.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#C8E6A0';
-      ctx.beginPath();
-      ctx.arc(0, 0, s * 0.55, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#8FBF6F';
-      for (let i = 0; i < 5; i++) {
-        const a = (i / 5) * Math.PI * 2;
-        ctx.beginPath();
-        ctx.ellipse(Math.cos(a) * s * 0.3, Math.sin(a) * s * 0.3, s * 0.08, s * 0.14, a, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    } else if (piece.type === 'carrot') {
-      // Carrot shred: thin orange rectangle
-      ctx.fillStyle = '#FF7A1A';
-      ctx.fillRect(-s * 0.15, -s, s * 0.3, s * 2);
-      ctx.fillStyle = '#FFB35C';
-      ctx.fillRect(-s * 0.05, -s, s * 0.1, s * 2);
+    if (img.complete && img.naturalWidth > 0) {
+      const dh = dw * (img.naturalHeight / img.naturalWidth);
+      ctx.drawImage(img, -dw / 2, -dh / 2, dw, dh);
     } else {
-      // Red onion ring: purple ring
-      ctx.strokeStyle = '#A64CA6';
-      ctx.lineWidth = s * 0.28;
+      // Fallback: small colored ellipse until the sprite loads
+      ctx.fillStyle = piece.sprite.fallback;
       ctx.beginPath();
-      ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.strokeStyle = '#D9A0D9';
-      ctx.lineWidth = s * 0.1;
-      ctx.beginPath();
-      ctx.arc(0, 0, s * 0.6, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.ellipse(0, 0, piece.size * 0.6, piece.size, 0, 0, Math.PI * 2);
+      ctx.fill();
     }
     ctx.restore();
   }
@@ -561,7 +517,7 @@ document.getElementById('orderForm').addEventListener('submit', e => {
       piece.sway += piece.swaySpeed;
       piece.x += Math.sin(piece.sway) * 0.6;
       piece.rotation += piece.rotSpeed;
-      if (piece.y > h + 30) pieces[i] = makePiece();
+      if (piece.y > h + 40) pieces[i] = makePiece();
       draw(piece);
     });
     requestAnimationFrame(tick);
